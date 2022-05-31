@@ -13,7 +13,7 @@ import { InternalApiService } from 'src/internal-api/internal-api.service';
 export class FetchNftService {
   private logger = new Logger(FetchNftService.name);
   constructor(
-    private readonly openSea: OpenseaService,
+    private openSea: OpenseaService,
     private genericApi: GenericApiService,
     private ipfs: IpfsService,
     private pinata: PinataService,
@@ -69,7 +69,6 @@ export class FetchNftService {
     if (!_token) {
       _token = token;
     }
-
     return {
       token: _token,
       collection: {

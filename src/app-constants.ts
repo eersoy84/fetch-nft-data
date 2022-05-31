@@ -15,6 +15,4 @@ export type FilteredCollectionsWithUserId = {
 
 export const FETCH_NFT_DATA_SERVICE = 'FETCH_NFT_DATA_SERVICE';
 export const OPENSEA_CONTRACT_ADDRESS = '0x495f947276749ce646f68ac8c248420045cb7b5e';
-export const COLLECTION_API_URL = 'https://nfts.dev.webb.game';
-export const INTERNAL_API_URL = 'https://nfts.dev.webb.game';
 export const INTERNAL_API = 'INTERNAL_API';

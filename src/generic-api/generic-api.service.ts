@@ -4,17 +4,22 @@ import axiosRetry from 'axios-retry';
 import { bufferToBase64Uri } from 'src/utils';
 
 @Injectable()
-export class GenericApiService implements OnModuleInit {
+export class GenericApiService {
   private axiosClient: any;
   private readonly logger = new Logger(GenericApiService.name);
 
-  async onModuleInit() {
+  constructor() {
     this.axiosClient = axios.create({
       baseURL: process.env.OPENSEA_API_URL,
       timeout: 5000,
     });
-    this.logger.log('axios retry...');
-    axiosRetry(this.axiosClient, { retries: 3, retryDelay: () => 1000 });
+    axiosRetry(this.axiosClient, {
+      retries: 3,
+      retryDelay: (retryCount) => {
+        console.log(`Open sea client retry attempt: ${retryCount}`);
+        return retryCount * 2000;
+      },
+    });
   }
 
   async genericApiGetBase64(path: string, maxFilesize = 1_048_576): Promise<string> {
@@ -39,6 +44,7 @@ export class GenericApiService implements OnModuleInit {
     // attempt to check filesize
     try {
       const head = await this.axiosClient.head(url, { params });
+
       const filesize = parseInt(head.headers['content-length'] || '-1');
 
       if (filesize > maxFilesize) {
@@ -49,7 +55,6 @@ export class GenericApiService implements OnModuleInit {
         console.warn(`No filesize given for ${path}, we're not going to risk downloading it`);
         return null;
       }
-
       const response = await this.axiosClient.get(url, {
         params,
         responseType: 'arraybuffer',

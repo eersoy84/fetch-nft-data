@@ -11,9 +11,11 @@ export class InternalApiService {
   }
   async setUserOwnedAvatar(userId: string, avatarMetadata: AvatarMetadata) {
     try {
-      this.internalApi.setUserOwnedAvatar(userId, avatarMetadata);
+      console.log(avatarMetadata);
+      this.logger.verbose('Saving avatar metadata to database');
+      await this.internalApi.setUserOwnedAvatar(userId, avatarMetadata);
     } catch (err) {
-      this.logger.error(`While saving User Owned Avatar MetaData with ${userId} to Database`, err);
+      this.logger.error(`While saving  Avatar MetaData ${avatarMetadata} with ${userId} to Database`, err);
     }
   }
 }

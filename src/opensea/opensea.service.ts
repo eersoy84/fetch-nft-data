@@ -12,23 +12,20 @@ import { CollectionToken } from 'src/models/collectionTokens';
 import { OpenseaImageAndThumbnailUri } from 'src/models/opensea';
 
 @Injectable()
-export class OpenseaService implements OnModuleInit {
-  private openseaClient: any;
+export class OpenseaService {
+  public openseaClient: any;
   private readonly logger = new Logger(OpenseaService.name);
 
   constructor(private genericApi: GenericApiService) {
-    this.openseaClient = axios.create({
-      baseURL: process.env.OPENSEA_API_URL,
-      timeout: 5000,
-    });
-  }
-  async onModuleInit() {
-    await this.initializeOpensea();
-  }
-
-  async initializeOpensea() {
-    this.logger.verbose('Initializing Opensea...');
-    axiosRetry(this.openseaClient, { retries: 3, retryDelay: () => 500 });
+    try {
+      this.openseaClient = axios.create({
+        baseURL: process.env.OPENSEA_API_URL,
+        timeout: 5000,
+      });
+      axiosRetry(this.openseaClient, { retries: 3, retryDelay: () => 500 });
+    } catch (err) {
+      this.logger.error('axios create error');
+    }
   }
 
   async fetchOpenSeaThumbnailBase64(address: string, tokenId: string): Promise<string> {
@@ -42,11 +39,14 @@ export class OpenseaService implements OnModuleInit {
 
     this.logger.log(`Fetching image ${address} #${tokenId} from OpenSea`);
     try {
-      const { data } = await this.openseaClient.get(`/api/v1/assets?asset_contract_address=${address}&token_ids=${tokenId}`, {
-        headers: {
-          'X-API-KEY': process.env.OPENSEA_API_KEY || '',
+      const { data } = await this.openseaClient.get(
+        `/api/v1/assets?asset_contract_address=${address}&token_ids=${tokenId}`,
+        {
+          headers: {
+            'X-API-KEY': process.env.OPENSEA_API_KEY || '',
+          },
         },
-      });
+      );
       if (data) {
         let asset = data.assets[0];
         imageUri = asset.image_url || '';
@@ -84,16 +84,24 @@ export class OpenseaService implements OnModuleInit {
     return [60 * (h < 0 ? h + 6 : h), v && c / v, v];
   }
 
-  async fetchOpenSeaImageUrlProcessed(address: string, tokenId: string, width: number, height: number): Promise<string> {
+  async fetchOpenSeaImageUrlProcessed(
+    address: string,
+    tokenId: string,
+    width: number,
+    height: number,
+  ): Promise<string> {
     let imageBase64 = '';
 
     this.logger.log(`Fetching image ${address} #${tokenId} from OpenSea to process`);
     try {
-      const { data } = await this.openseaClient.get(`/api/v1/assets?asset_contract_address=${address}&token_ids=${tokenId}`, {
-        headers: {
-          'X-API-KEY': process.env.OPENSEA_API_KEY || '',
+      const { data } = await this.openseaClient.get(
+        `/api/v1/assets?asset_contract_address=${address}&token_ids=${tokenId}`,
+        {
+          headers: {
+            'X-API-KEY': process.env.OPENSEA_API_KEY || '',
+          },
         },
-      });
+      );
 
       let asset = data.assets[0];
       let imageUri = asset.image_url || '';
@@ -239,11 +247,14 @@ export class OpenseaService implements OnModuleInit {
     this.logger.log(`Fetching metadata ${address} #${token_id} from OpenSea`);
 
     try {
-      const { data } = await this.openseaClient.get(`/api/v1/assets?asset_contract_address=${address}&token_ids=${token_id}`, {
-        headers: {
-          'X-API-KEY': process.env.OPENSEA_API_KEY || '',
+      const { data } = await this.openseaClient.get(
+        `/api/v1/assets?asset_contract_address=${address}&token_ids=${token_id}`,
+        {
+          headers: {
+            'X-API-KEY': process.env.OPENSEA_API_KEY || '',
+          },
         },
-      });
+      );
 
       let asset = data.assets[0];
 
