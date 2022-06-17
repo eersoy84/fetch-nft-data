@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { AvatarMetadata, InternalApi } from '@worldwidewebb/client-nfts';
-import { INTERNAL_API } from 'src/app-constants';
+import { INTERNAL_API } from 'src/app.constants';
 
 @Injectable()
 export class InternalApiService {

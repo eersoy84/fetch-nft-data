@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { InternalApi } from '@worldwidewebb/client-nfts';
-import { INTERNAL_API } from 'src/app-constants';
+import { INTERNAL_API } from 'src/app.constants';
 import { InternalApiService } from './internal-api.service';
 
 const internalApiFactory = {

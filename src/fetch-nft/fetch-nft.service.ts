@@ -6,7 +6,7 @@ import { GenericApiService } from 'src/generic-api/generic-api.service';
 import { IpfsService } from 'src/ipfs/ipfs.service';
 import { PinataService } from 'src/pinata/pinata.service';
 import { Collection, OpenseaListing, Token, Spritesheet } from '@worldwidewebb/shared-messages/nfts';
-import { FilteredCollectionsWithUserId } from 'src/app-constants';
+import { FilteredCollectionsWithUserId } from 'src/app.constants';
 import { InternalApiService } from 'src/internal-api/internal-api.service';
 
 @Injectable()

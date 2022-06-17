@@ -5,7 +5,12 @@ import { ConfigModule } from '@nestjs/config';
 import { FetchNftModule } from './fetch-nft/fetch-nft.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), FetchNftModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    FetchNftModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
