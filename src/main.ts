@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import KafkaCustomerTransporter from './kafka-custom-transporter';
+import KafkaCustomTransporter from './kafka-custom-transporter';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(AppModule, {
-    strategy: new KafkaCustomerTransporter({
+    strategy: new KafkaCustomTransporter({
       subscribe: {
         fromBeginning: true,
       },

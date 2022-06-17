@@ -1,17 +1,17 @@
-import { IncomingRequest, KafkaContext, KafkaHeaders, ReadPacket, ServerKafka } from "@nestjs/microservices";
-import { EachMessagePayload, KafkaMessage } from "@nestjs/microservices/external/kafka.interface";
-import { NO_MESSAGE_HANDLER } from "@nestjs/microservices/constants";
-import { Observable } from "rxjs";
-import { IncomingMessage } from "http";
+import { IncomingRequest, KafkaContext, KafkaHeaders, ReadPacket, ServerKafka } from '@nestjs/microservices';
+import { EachMessagePayload, KafkaMessage } from '@nestjs/microservices/external/kafka.interface';
+import { NO_MESSAGE_HANDLER } from '@nestjs/microservices/constants';
+import { Observable } from 'rxjs';
+import { IncomingMessage } from 'http';
 
-export default class KafkaCustomerTransporter extends ServerKafka {
+export default class KafkaCustomTransporter extends ServerKafka {
   public async handleMessage(payload: EachMessagePayload) {
     const channel = payload.topic;
     const rawMessage = this.parser.parse<KafkaMessage>(
       Object.assign(payload.message, {
         topic: payload.topic,
         partition: payload.partition,
-      })
+      }),
     );
     const headers = rawMessage.headers as unknown as Record<string, any>;
     const correlationId = headers[KafkaHeaders.CORRELATION_ID];
